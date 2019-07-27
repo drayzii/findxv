@@ -28,7 +28,7 @@ app.get('/', (req, res)=>{
     })
 })
 app.use('/main', mainRoute)
-app.use('/admin', checkAuth, adminRoute)
+app.use('/admin', adminRoute)
 
 const PORT = process.env.PORT || 5000
 
