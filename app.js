@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const fileupload = require('express-fileupload')
 const mainRoute = require('./routes/main')
 const adminRoute = require('./routes/admin')
@@ -16,6 +17,8 @@ mongoose.connect(db, { useNewUrlParser: true })
             console.log(err)
     })
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json())
 app.use(fileupload({
     useTempFiles: true
