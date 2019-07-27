@@ -4,7 +4,7 @@ if(req.body.email==='fraterne01@gmail.com'&&req.body.password==='fraterne123458'
 } else{
     res.status(403).json({
         status: 403,
-        error: 'Forbidden Route'
+        error: req.body
     })
 }
 }
