@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 
 var data = []   
 
-router.post('/ibyatawe', (req, res)=>{
+router.get('/ibyatawe', (req, res)=>{
     Nataye.find()
         .then(result=>{
             if(result.length == 0){
@@ -57,7 +57,7 @@ router.get('/ibyatoraguwe', (req, res)=>{
         })
 })
 
-router.get('/ibyahujwe', (req, res)=>{
+router.post('/ibyahujwe', (req, res)=>{
     Nataye.find()
     .then((results)=>{
         results.forEach(result => {
