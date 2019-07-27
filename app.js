@@ -3,6 +3,7 @@ const fileupload = require('express-fileupload')
 const mainRoute = require('./routes/main')
 const adminRoute = require('./routes/admin')
 const db = require('./dbConn').mongoURI
+const checkAuth = require('./middleware/checkauth')
 const mongoose = require('mongoose')
 
 const app = express()
@@ -27,7 +28,7 @@ app.get('/', (req, res)=>{
     })
 })
 app.use('/main', mainRoute)
-app.use('/admin', adminRoute)
+app.use('/admin', checkAuth, adminRoute)
 
 const PORT = process.env.PORT || 5000
 
