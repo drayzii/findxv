@@ -55,6 +55,11 @@
                                 <li data-aos="fade-up" data-aos-delay="300"><a href="#tuvugishe-section"
                                         class="btn btn-warning py-2 px-3 btn-pill"><span
                                             style="color: #d9edf7">Tuvugishe</span></a></li>
+                                <li data-aos="fade-up" data-aos-delay="300">
+                                        <a href="en" class="btn btn-secondary py-2 px-3 btn-pill">
+                                            <span style="color: #d9edf7">En</span>
+                                        </a>
+                                    </li>
                             </ul>
                         </nav>
                         <span href="#"
@@ -78,15 +83,15 @@
                     <div class="row align-items-center">
                         <div class="row container align-items-center">
                             <div class='col-lg-12'>
-                                    <% if(status == 'success'){ %>
-                                        <div class="alert alert-primary" role="alert">Murakoze! Icyangombwa cyinjijwe.</div>
-                                    <% } else if(status == 'exists'){ %>
-                                        <div class="alert alert-danger" role="alert">Icyangombwa mushaka kwinjiza cyarinjijwe.</div>
-                                    <% } else if(status == 'contact-success'){ %>
-                                        <div class="alert alert-primary" role="alert">Murakoze! Ubutumwa twabwakiriye.</div>
-                                    <% } else if(status == 'failed'){ %>
-                                        <div class="alert alert-danger" role="alert">Mutwihanganire, habaye ikibazo kidaturutseho.</div>
-                                    <% } %>
+                                <% if(status == 'success'){ %>
+                                    <div class="alert alert-primary" role="alert">Murakoze! Icyangombwa cyinjijwe.</div>
+                                <% } else if(status == 'exists'){ %>
+                                    <div class="alert alert-danger" role="alert">Icyangombwa mushaka kwinjiza cyarinjijwe.</div>
+                                <% } else if(status == 'contact-success'){ %>
+                                    <div class="alert alert-primary" role="alert">Murakoze! Ubutumwa twabwakiriye.</div>
+                                <% } else if(status == 'failed'){ %>
+                                    <div class="alert alert-danger" role="alert">Mutwihanganire, habaye ikibazo kidaturutseho.</div>
+                                <% } %>
                             </div>
                             <div class="col-lg-6">
 
@@ -110,7 +115,7 @@
                                         <div class="col-md-6 form-group">
                                             <div class="mb-3 mb-lg-0">
                                                 <input required name="amazina" type="text" class="form-control"
-                                                    placeholder="Amazina Y'uwataye">
+                                                    placeholder="Amazina">
                                             </div>
                                         </div>
                                         <div class="col-md-6 form-group">
@@ -230,7 +235,7 @@
                             <div class="col-md-6 form-group">
                                 <div class="mb-3 mb-lg-0">
                                     <input required name="amazina" type="text" class="form-control"
-                                        placeholder="Amazina Y'uwataye">
+                                        placeholder="Amazina">
                                 </div>
                             </div>
                             <div class="col-md-6 form-group">
