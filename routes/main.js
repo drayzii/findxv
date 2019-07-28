@@ -3,72 +3,14 @@ const mongoose = require('mongoose')
 const cloudinary = require('cloudinary').v2
 const Nataye = require('../models/nataye')
 const Natoraguye = require('../models/natoraguye')
-const Ibyabonetse = require('../models/ibyabonetse')
 
 const router = express.Router();
 
 cloudinary.config({
-    cloud_name: 'drayzii',
-    api_key: '684962114961327',
-    api_secret: 'nd7rO_KTFnhyfkRXCS4pqzgIyjA'
+    cloud_name: 'fraterne',
+    api_key: '732255275258672',
+    api_secret: '1If_1CJ2qr3Z2Dykn6eO7jwW84s'
   })
-
-router.get('/ibyatawe', (req, res)=>{
-    Nataye.find()
-        .then(result=>{
-            if(result.length == 0){
-                res.status(200).json({ 
-                    status: 200,
-                    error: 'Nothing to show' })
-                res.end()
-            }
-            else{
-                res.status(200).json({
-                    status: 200,
-                    data: result
-                })
-                res.end()
-            }
-        })
-})
-
-router.get('/ibyatoraguwe', (req, res)=>{
-    Natoraguye.find()
-        .then(result=>{
-            if(result.length == 0){
-                res.status(200).json({ 
-                    status: 200,
-                    error: 'Nothing to show' })
-                res.end()
-            }
-            else{
-                res.status(200).json({
-                    status: 200,
-                    data: result
-                })
-                res.end()
-            }
-        })
-})
-
-router.get('/ibyabonetse', (req, res)=>{
-    Ibyabonetse.find()
-        .then(result=>{
-            if(result.length == 0){
-                res.status(200).json({ 
-                    status: 200,
-                    error: 'Nothing to show' })
-                res.end()
-            }
-            else{
-                res.status(200).json({
-                    status: 200,
-                    data: result
-                })
-                res.end()
-            }
-        })
-})
 
 router.post('/nataye', (req, res)=>{
     const { 
@@ -88,10 +30,7 @@ router.post('/nataye', (req, res)=>{
     .findOne({ icyangombwa })
     .then(result => {
         if(result){
-            res.status(409).json({
-                status: 409,
-                error: 'You have already added this'
-            })
+            res.redirect('/?status=exists')
         } else{
             const newNataye = new Nataye({
                 amazina,
@@ -106,90 +45,151 @@ router.post('/nataye', (req, res)=>{
                 email
             })
             newNataye.save()
-            .then(result=>{
-                res.status(201).json({
-                    status: 201,
-                    data : result
-                })
-                res.end()
+            .then(()=>{
+                res.redirect('/?status=success')
             })
             .catch(()=>{
-                res.status(500).json({ 
-                    status: 500,
-                    error: 'Ooops! Something went wrong.'
-                })
-                res.end()
+                res.redirect('/?status=failed')
             })
         }
     })
-    .catch(error=>{
-        res.status(500).json({
-            status: 500,
-            error
-        })
+    .catch(()=>{
+        res.redirect('/?status=failed')
     })
 })
 
 router.post('/natoraguye', (req, res)=>{ 
-    if (req.files) {
-        const file = req.files.photo;
-        cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
-            if (error) {
-                res.status(500).json({
-                    status: 500,
-                    error
-                });
-            } else {
-                const { 
-                    amazina,
-                    telefone,
-                    akarere,
-                    umurenge,
-                    akagari,
-                    umudugudu,
-                    ubwoko,
-                    indangamuntu,
-                    icyangombwa,
-                    email,
-                    ubusobanuro
-                } = req.body
-                const newNatoraguye = new Natoraguye({
-                    amazina,
-                    telefone,
-                    akarere,
-                    umurenge,
-                    akagari,
-                    umudugudu,
-                    ubwoko,
-                    indangamuntu,
-                    icyangombwa,
-                    email,
-                    ifoto: result.url,
-                    ubusobanuro
-                })
-                newNatoraguye.save()
-                .then(result1=>{
-                    res.status(201).json({
-                        status: 201,
-                        data : result1
-                    })
-                    res.end()
-                })
-                .catch((err)=>{
-                    res.status(500).json({ 
-                        status: 500,
-                        error: err
-                    })
-                    res.end()
-                })
-            }
-        })
-    } else {
-        res.status(400).json({
-            status: 401,
-            error: 'You should provide the picture'
-        })
-    }
+    const file = req.files.ifoto;
+    cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
+        if (error) {
+            res.redirect('/?status=failed')
+        } else {
+            const { 
+                amazina,
+                telefone,
+                akarere,
+                umurenge,
+                akagari,
+                umudugudu,
+                ubwoko,
+                indangamuntu,
+                icyangombwa,
+                email,
+                ubusobanuro
+            } = req.body
+            const newNatoraguye = new Natoraguye({
+                amazina,
+                telefone,
+                akarere,
+                umurenge,
+                akagari,
+                umudugudu,
+                ubwoko,
+                indangamuntu,
+                icyangombwa,
+                email,
+                ifoto: result.url,
+                ubusobanuro
+            })
+            newNatoraguye.save()
+            .then(()=>{
+                res.redirect('/?status=success')
+            })
+            .catch(()=>{
+                res.redirect('/?status=failed')
+            })
+        }
+    })
+})
+
+router.post('/nataye/en', (req, res)=>{
+    const { 
+        amazina,
+        telefone,
+        akarere,
+        umurenge,
+        akagari,
+        umudugudu,
+        ubwoko,
+        indangamuntu,
+        icyangombwa,
+        email
+     } = req.body
+    
+    Nataye
+    .findOne({ icyangombwa })
+    .then(result => {
+        if(result){
+            res.redirect('/en?status=exists')
+        } else{
+            const newNataye = new Nataye({
+                amazina,
+                telefone,
+                akarere,
+                umurenge,
+                akagari,
+                umudugudu,
+                ubwoko,
+                indangamuntu,
+                icyangombwa,
+                email
+            })
+            newNataye.save()
+            .then(()=>{
+                res.redirect('/en?status=success')
+            })
+            .catch(()=>{
+                res.redirect('/en?status=failed')
+            })
+        }
+    })
+    .catch(()=>{
+        res.redirect('/en?status=failed')
+    })
+})
+
+router.post('/natoraguye/en', (req, res)=>{ 
+    const file = req.files.ifoto;
+    cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
+        if (error) {
+            res.redirect('/en?status=failed')
+        } else {
+            const { 
+                amazina,
+                telefone,
+                akarere,
+                umurenge,
+                akagari,
+                umudugudu,
+                ubwoko,
+                indangamuntu,
+                icyangombwa,
+                email,
+                ubusobanuro
+            } = req.body
+            const newNatoraguye = new Natoraguye({
+                amazina,
+                telefone,
+                akarere,
+                umurenge,
+                akagari,
+                umudugudu,
+                ubwoko,
+                indangamuntu,
+                icyangombwa,
+                email,
+                ifoto: result.url,
+                ubusobanuro
+            })
+            newNatoraguye.save()
+            .then(()=>{
+                res.redirect('/en?status=success')
+            })
+            .catch(()=>{
+                res.redirect('/en?status=failed')
+            })
+        }
+    })
 })
 
 module.exports = router

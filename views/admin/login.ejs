@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Ndarangisha - Login</title>
+
+
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-dark">
+
+  <div class="container">
+    <div class="card card-login mx-auto mt-5">
+      <div class="card-header">Login</div>
+      <div class="card-body">
+        <% if(status){ %>
+          <% if(status == 'auth'){ %>
+            <p>You need to Login First.</p>
+          <% } else if(status == 'logout'){ %>
+            <p>Successfully Logged Out.</p>
+          <% }%>
+        <% } %>
+        <form action="login" method="POST">
+          <div class="form-group">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Email" name="email" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Password" name="password" required>
+            </div>
+          </div>
+         
+          <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form><br>
+        <% if(status){ %>
+          <% if(status == 'failed'){ %>
+            <p>Login Failed.</p>
+          <% }%>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
