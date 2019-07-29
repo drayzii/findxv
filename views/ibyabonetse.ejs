@@ -111,10 +111,13 @@
                                         Ntabyabonetse Bihari
                                     </div>
                                 <% } %>
-                                <% results.forEach(function(result) { %>
+                                <% var counter = 0; results.forEach(function(result) { counter = counter+1; %>
                                     <div class="col-lg-4 mt-2">
                                         <div class="card w3-card">
-                                            <div class="card-body">
+                                            <div class="card-title">
+                                                <h1 align="center" style="padding-top: 3px; margin-bottom: -20px;"><%= counter%></h1>
+                                            </div>
+                                            <div class="card-body">>
                                                 <ul class="list-group">
                                                     <li class="list-group-item"><strong>Amazina:</strong> <%= result.amazina %>
                                                     </li>

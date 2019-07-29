@@ -108,9 +108,12 @@
                                         Nothing to Show
                                     </div>
                                 <% } %>
-                                <% results.forEach(function(result) { %>
+                                <% var counter = 0; results.forEach(function(result) { counter = counter+1; %>
                                     <div class="col-lg-4 mt-2">
                                         <div class="card w3-card">
+                                            <div class="card-title">
+                                                <h1 align="center" style="padding-top: 3px; margin-bottom: -20px;"><%= counter%></h1>
+                                            </div>
                                             <div class="card-body">
                                                 <ul class="list-group">
                                                     <li class="list-group-item"><strong>Names:</strong> <%= result.amazina %>
@@ -120,6 +123,9 @@
                                                     <li class="list-group-item"><strong>Document ID:</strong>
                                                         <%= result.icyangombwa %></li>
                                                 </ul>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a class="btn btn-primary" href="/en/?#nataye-section">It's mine</a>
                                             </div>
                                         </div>
                                     </div>
