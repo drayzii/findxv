@@ -1,6 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const fileupload = require('express-fileupload')
+var cookieParser = require('cookie-parser')
+const jwt = require('jsonwebtoken')
 const mainRoute = require('./routes/main')
 const adminRoute = require('./routes/admin')
 const db = require('./dbConn').mongoURI
@@ -29,6 +31,7 @@ app.use(express.json())
 app.use(fileupload({
     useTempFiles: true
 }))
+app.use(cookieParser());
 
 app.get('/', (req, res)=>{
     if(req.query.status){
@@ -101,7 +104,15 @@ app.get('/en/ibyabonetse', (req, res)=>{
         })
 })
 app.use('/main', mainRoute)
-app.use('/admin', adminRoute)
+app.use('/admin', (req, res, next) => {
+    try {
+        req.auth = jwt.verify(req.cookies.token, 'OK')
+        next()
+    } catch (error) {
+        console.log(error)
+        next()
+    }
+} ,adminRoute)
 
 const PORT = process.env.PORT || 5000
 

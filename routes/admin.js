@@ -1,7 +1,10 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 mongoose.set('useFindAndModify', false)
-const nodemailer = require('nodemailer')
+var API_KEY = '201d11e03bb81d3804cce248dc9ff3a4-0a4b0c40-b97ad0a8'
+var DOMAIN = 'sandbox3bbc9be9da484e75b36c4731fba6788a.mailgun.org'
+var mailgun = require('mailgun-js')({apiKey: API_KEY, domain: DOMAIN})
 
 const Nataye = require('../models/nataye')
 const Natoraguye = require('../models/natoraguye')
@@ -9,20 +12,10 @@ const Ibyabonetse = require('../models/ibyabonetse')
 
 const router = express.Router();
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-           user: 'jonashyaka2@gmail.com',
-           pass: 'Petroleum5'
-    }
-})
-
-var isVerified = false
-
 var elements = []   
 
 router.get('/', (req, res)=>{
-    if(isVerified == true){
+    if(req.auth){
         res.redirect('ibyahujwe')
     } else{
         res.redirect('login')
@@ -43,7 +36,7 @@ router.get('/login', (req, res)=>{
 
 router.post('/login', (req, res)=>{
     if(req.body.email==='fraterne01@gmail.com'&&req.body.password==='fraterne123458'){
-        isVerified = true
+        res.cookie('token', jwt.sign('auth', 'OK'))
         res.redirect('ibyahujwe')
     } else{
         res.redirect('login?status=failed')
@@ -51,12 +44,12 @@ router.post('/login', (req, res)=>{
 })
 
 router.get('/logout', (req, res)=>{
-    isVerified = false
+    res.cookie('token', '');
     res.redirect('login?status=logout')
 })
 
 router.get('/ibyatakaye', (req, res)=>{
-    if(isVerified == true){
+    if(req.auth){
         Nataye.find()
             .then(results=>{
                 res.render('admin/ibyatakaye', {
@@ -69,7 +62,7 @@ router.get('/ibyatakaye', (req, res)=>{
 })
 
 router.get('/ibyatowe', (req, res)=>{
-    if(isVerified == true){
+    if(req.auth){
         Natoraguye.find()
             .then(results=>{
                 res.render('admin/ibyatowe', {
@@ -82,7 +75,7 @@ router.get('/ibyatowe', (req, res)=>{
 })
 
 router.get('/ibyahujwe', (req, res)=>{
-    if(isVerified == true){
+    if(req.auth){
         Natoraguye.find()
         .then((results)=>{
             results.forEach(result => {
@@ -124,7 +117,7 @@ router.get('/ibyahujwe', (req, res)=>{
 })
 
 router.get('/ibyabonetse', (req, res)=>{
-    if(isVerified == true){
+    if(req.auth){
         Ibyabonetse.find()
             .then(results=>{
                 res.render('admin/ibyabonetse', {
@@ -137,7 +130,7 @@ router.get('/ibyabonetse', (req, res)=>{
 })
 
 router.get('/kwemeza/:id', (req, res)=>{
-    if(isVerified == true){
+    if(req.auth){
         const query = { icyangombwa: req.params.id }
 
         const update = {
@@ -148,30 +141,32 @@ router.get('/kwemeza/:id', (req, res)=>{
         .findOneAndUpdate(query, update, { new: true })
         .then(results=>{
             const mailOptions = {
-                from: 'fraterne01@gmail.com',
+                from: 'RUGWIZANGOGA Fraterne <fraterne@ndarangisha.com>',
                 to: results.email,
                 subject: 'Icyangombwa watoraguye cyabonye nyiracyo',
                 html: '<p>Murakoze gukoresha gahunda yacu ya mudasobwa yitwa NDARANGISHA. La fraternité Tech Ltd irabamenyesha ko icyangombwa mwatoraguye cyabonye nyiracyo. Hamagara 0788902758</p>'
             };
-            transporter.sendMail(mailOptions, function (err) {
+            mailgun.messages().send(mailOptions, function (error, body) {
                 if(err){
                 console.log(err)
                 }
                 else {
+                    console.log(body)
                     Nataye
                     .findOne(query)
                     .then(results2=>{
                         const mailOptions = {
-                            from: 'fraterne01@gmail.com',
+                            from: 'RUGWIZANGOGA Fraterne <fraterne@ndarangisha.com>',
                             to: results2.email,
                             subject: 'Icyangombwa cyawe cyabonetse',
                             html: '<p>Murakoze gukoresha gahunda yacu ya mudasobwa yitwa NDARANGISHA. La fraternité Tech Ltd irabamenyesha ko icyangombwa mwarangishije cyabonetse. Hamagara 0788902758</p>'
                         }
-                        transporter.sendMail(mailOptions, function (err) {
+                        mailgun.messages().send(mailOptions, function (error, body) {
                             if(err){
-                                console.log(err)
+                                console.log(error)
                             }
                             else{
+                                console.log(body)
                                 const newIbyabonetse = new Ibyabonetse({
                                     amazina: results2.amazina,
                                     ubwoko: results2.ubwoko,
@@ -236,7 +231,7 @@ router.get('/kwemeza/:id', (req, res)=>{
 })
 
 router.get('/ibyatakaye/delete/:id', (req, res)=>{
-    if(isVerified == true){
+    if(req.auth){
         Nataye
         .findByIdAndDelete(req.params.id)
         .then(()=>{
@@ -255,7 +250,7 @@ router.get('/ibyatakaye/delete/:id', (req, res)=>{
 })
 
 router.get('/ibyatoraguwe/delete/:id', (req, res)=>{
-    if(isVerified == true){
+    if(req.auth){
         Natoraguye
         .findByIdAndDelete(req.params.id)
         .then(()=>{
