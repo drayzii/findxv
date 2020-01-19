@@ -35,7 +35,7 @@ router.get('/login', (req, res)=>{
 })
 
 router.post('/login', (req, res)=>{
-    if(req.body.email==='fraterne01@gmail.com'&&req.body.password==='fraterne123458'){
+    if(req.body.email==='fraterne01@gmail.com'&&req.body.password==='imbutotv123458'){
         res.cookie('token', jwt.sign('auth', 'OK'))
         res.redirect('ibyahujwe')
     } else{
