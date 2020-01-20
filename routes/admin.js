@@ -147,11 +147,10 @@ router.get('/kwemeza/:id', (req, res)=>{
                 html: '<p>Murakoze gukoresha gahunda yacu ya mudasobwa yitwa NDARANGISHA. La fraternité Tech Ltd irabamenyesha ko icyangombwa mwatoraguye cyabonye nyiracyo. Hamagara 0788902758</p>'
             };
             mailgun.messages().send(mailOptions, function (error, body) {
-                if(err){
-                console.log(err)
+                if(error){
+                    console.log(error)
                 }
                 else {
-                    console.log(body)
                     Nataye
                     .findOne(query)
                     .then(results2=>{
@@ -162,11 +161,10 @@ router.get('/kwemeza/:id', (req, res)=>{
                             html: '<p>Murakoze gukoresha gahunda yacu ya mudasobwa yitwa NDARANGISHA. La fraternité Tech Ltd irabamenyesha ko icyangombwa mwarangishije cyabonetse. Hamagara 0788902758</p>'
                         }
                         mailgun.messages().send(mailOptions, function (error, body) {
-                            if(err){
+                            if(error){
                                 console.log(error)
                             }
                             else{
-                                console.log(body)
                                 const newIbyabonetse = new Ibyabonetse({
                                     amazina: results2.amazina,
                                     ubwoko: results2.ubwoko,
